@@ -33,16 +33,6 @@ package com.hyman.zhh.leetcode;
  */
 public class Solution654 {
 
-    public class TreeNode {
-        int val;
-        TreeNode left;
-        TreeNode right;
-
-        TreeNode(int x) {
-            val = x;
-        }
-    }
-
     public TreeNode constructMaximumBinaryTree(int[] nums) {
         if (nums.length == 1) {
             return new TreeNode(nums[0]);
