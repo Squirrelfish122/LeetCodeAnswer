@@ -1,4 +1,6 @@
-package com.hyman.zhh.leetcode;
+package com.hyman.zhh.leetcode.tree;
+
+import com.hyman.zhh.leetcode.tree.TreeNode;
 
 /**
  * Created by hyman.zhh at 2020/06.

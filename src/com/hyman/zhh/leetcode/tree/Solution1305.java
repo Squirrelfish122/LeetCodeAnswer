@@ -1,4 +1,4 @@
-package com.hyman.zhh.leetcode;
+package com.hyman.zhh.leetcode.tree;
 
 import java.util.ArrayList;
 import java.util.List;
