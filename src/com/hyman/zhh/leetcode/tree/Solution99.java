@@ -1,8 +1,7 @@
 package com.hyman.zhh.leetcode.tree;
 
-import com.hyman.zhh.leetcode.tree.TreeNode;
-
-import java.util.LinkedList;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by hyman.zhh at 2020/06.
@@ -54,31 +53,52 @@ import java.util.LinkedList;
 public class Solution99 {
 
     public void recoverTree(TreeNode root) {
+        // TODO: 2020/10/23  
+        List<Integer> integers = new ArrayList<>();
+        inorder(root, integers);
+        int[] numbers = findSwapNumbers(integers);
+        recover(root, 2, numbers[0], numbers[1]);
+    }
 
-        // TODO: 2020/6/19  
+    private void inorder(TreeNode node, List<Integer> list) {
+        if (node == null) {
+            return;
+        }
+        inorder(node.left, list);
+        list.add(node.val);
+        inorder(node.right, list);
+    }
 
-        LinkedList<TreeNode> stack = new LinkedList<>();
-        TreeNode current = root, previous = null;
-
-
-        while (current != null || !stack.isEmpty()) {
-            while (current != null) {
-                stack.push(current);
-                current = current.left;
+    private int[] findSwapNumbers(List<Integer> list) {
+        int x = -1, y = -1;
+        for (int i = 0; i < list.size() - 1; i++) {
+            if (list.get(i) > list.get(i + 1)) {
+                y = list.get(i + 1);
+                if (x == -1) {
+                    x = list.get(i);
+                } else {
+                    break;
+                }
             }
+        }
+        return new int[]{x, y};
+    }
 
-            current = stack.pop();
-            if (previous == null || previous.val < current.val) {
-                previous = current;
+    private void recover(TreeNode node, int count, int x, int y) {
+        if (node == null) {
+            return;
+        }
+        if (node.val == x || node.val == y) {
+            if (node.val == x) {
+                node.val = y;
             } else {
-
-
+                node.val = x;
+            }
+            if (--count == 0) {
                 return;
             }
-            current = current.right;
         }
-
-
-
+        recover(node.left, count, x, y);
+        recover(node.right, count, x, y);
     }
 }
