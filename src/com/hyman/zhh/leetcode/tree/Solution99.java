@@ -1,6 +1,7 @@
 package com.hyman.zhh.leetcode.tree;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -52,8 +53,76 @@ import java.util.List;
  */
 public class Solution99 {
 
+    public void recoverTree3(TreeNode root) {
+        TreeNode x = null, y = null, pred = null, predecessor = null;
+        TreeNode current = root;
+        while (current != null) {
+            if (current.left != null) {
+                predecessor = current.left;
+                while (predecessor.right != null && predecessor.right != current) {
+                    predecessor = predecessor.right;
+                }
+                if (predecessor.right == null) {
+                    predecessor.right = current;
+                    current = current.left;
+                } else {
+                    if (pred != null && pred.val > current.val) {
+                        y = current;
+                        if (x == null) {
+                            x = pred;
+                        }
+                        // else的时候不能直接break,需要遍历完整棵树,将添加的predecessor.right删除
+                    }
+                    predecessor.right = null;
+                    pred = current;
+                    current = current.right;
+                }
+            } else {
+                if (pred != null && pred.val > current.val) {
+                    y = current;
+                    if (x == null) {
+                        x = pred;
+                    }
+                    // else的时候不能直接break,需要遍历完整棵树,将添加的predecessor.right删除
+                }
+                pred = current;
+                current = current.right;
+            }
+        }
+        swapNode(x, y);
+    }
+
+    public void recoverTree2(TreeNode root) {
+        TreeNode x = null, y = null, pred = null;
+        LinkedList<TreeNode> stack = new LinkedList<>();
+        TreeNode current = root;
+        while (!stack.isEmpty() || current != null) {
+            while (current != null) {
+                stack.push(current);
+                current = current.left;
+            }
+            current = stack.pop();
+            if (pred != null && pred.val > current.val) {
+                y = current;
+                if (x == null) {
+                    x = pred;
+                } else {
+                    break;
+                }
+            }
+            pred = current;
+            current = current.right;
+        }
+        swapNode(x, y);
+    }
+
+    private void swapNode(TreeNode x, TreeNode y) {
+        int temp = x.val;
+        x.val = y.val;
+        y.val = temp;
+    }
+
     public void recoverTree(TreeNode root) {
-        // TODO: 2020/10/23  
         List<Integer> integers = new ArrayList<>();
         inorder(root, integers);
         int[] numbers = findSwapNumbers(integers);
